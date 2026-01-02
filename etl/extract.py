@@ -20,18 +20,19 @@ def extract_prices_from_api(symbols: list[str])-> pd.DataFrame:
         if r.status_code != 200:
             raise Exception(r.status_code)
         data = r.json()
+        pprint(data)
         timestamps = data["chart"]["result"][0]["timestamp"]
         #price snapshots
-        quotes = data["indicators"]["quote"][0]
+        quotes = data["chart"]["result"][0]["indicators"]["quote"][0]
         #pair each timestamp with data
         for i, timestamp in enumerate(timestamps):
             all_data.append({
                 "symbol": symbol,
-                "date": pd.to_datetime(ts, unit='s'),
-                "open": quotes['open'][i],
-                "high": quotes['high'][i],
-                "low": quotes['low'][i],
-                "close": quotes['close'][i],
+                "date": pd.to_datetime(timestamp, unit='s'),
+                "open_price": quotes['open'][i],
+                "high_price": quotes['high'][i],
+                "low_price": quotes['low'][i],
+                "close_price": quotes['close'][i],
                 "volume": quotes['volume'][i]
             })
 

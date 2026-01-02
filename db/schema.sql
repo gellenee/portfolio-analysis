@@ -5,8 +5,9 @@
 -- ex entyr 
 -- symbol,asset_name,asset_type,currency
 -- AAPL,Apple Inc,Stock,usd
-CREATE TABLE dim_asset (
-  asset_id SERIAL PRIMARY KEY,
+-- migrate to postgres: AUTOINCREMENT -> SERIAL
+CREATE TABLE IF NOT EXISTS dim_asset (
+  asset_id INTEGER PRIMARY KEY AUTOINCREMENT,
   symbol VARCHAR(10) NOT NULL UNIQUE,
   asset_name TEXT,
   asset_type VARCHAR(20) NOT NULL
@@ -14,19 +15,18 @@ CREATE TABLE dim_asset (
   currency VARCHAR(3) NOT NULL
 );
 
-CREATE TABLE dim_date (
+CREATE TABLE IF NOT EXISTS dim_date (
   date_id INTEGER PRIMARY KEY,      -- YYYYMMDD
   date DATE NOT NULL UNIQUE,
   year INTEGER NOT NULL,
   quarter INTEGER NOT NULL,
   month INTEGER NOT NULL,
   day INTEGER NOT NULL,
-  day_of_week INTEGER NOT NULL,
-  is_trading_day BOOLEAN NOT NULL
+  day_of_week INTEGER NOT NULL
 );
 
-CREATE TABLE dim_portfolio (
-  portfolio_id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS dim_portfolio (
+  portfolio_id INTEGER PRIMARY KEY AUTOINCREMENT,
   portfolio_name TEXT NOT NULL,
   owner TEXT,
   base_currency VARCHAR(3) NOT NULL
@@ -36,7 +36,7 @@ CREATE TABLE dim_portfolio (
 -- FACT TABLES
 -- =========================
 
-CREATE TABLE fact_prices (
+CREATE TABLE IF NOT EXISTS fact_prices (
   date_id INTEGER NOT NULL,
   asset_id INTEGER NOT NULL,
   open_price NUMERIC(12,4),
@@ -50,8 +50,8 @@ CREATE TABLE fact_prices (
   FOREIGN KEY (asset_id) REFERENCES dim_asset(asset_id)
 );
 
-CREATE TABLE fact_trades (
-  trade_id SERIAL PRIMARY KEY,
+CREATE TABLE IF NOT EXISTS fact_trades (
+  trade_id INTEGER PRIMARY KEY AUTOINCREMENT,
   portfolio_id INTEGER NOT NULL,
   asset_id INTEGER NOT NULL,
   trade_time TIMESTAMP NOT NULL,
@@ -64,7 +64,7 @@ CREATE TABLE fact_trades (
   FOREIGN KEY (asset_id) REFERENCES dim_asset(asset_id)
 );
 
-CREATE TABLE fact_positions (
+CREATE TABLE IF NOT EXISTS fact_positions (
   date_id INTEGER NOT NULL,
   portfolio_id INTEGER NOT NULL,
   asset_id INTEGER NOT NULL,
