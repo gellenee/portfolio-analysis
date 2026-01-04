@@ -44,5 +44,6 @@ def extract_prices_from_csv(path: str) -> pd.DataFrame:
     df.columns = df.columns.str.lower()
     return df
 
+
 if __name__ == "__main__":
     print(extract_prices_from_api(["AAPL", "GOOGL"]))
