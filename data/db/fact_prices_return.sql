@@ -1,7 +1,7 @@
 SELECT
     date_id, 
     asset_id, 
-    close_price
+    close_price,
     -- = adding closing price from previous day
     LAG(close_price) OVER (PARTITION BY asset_id ORDER BY date_id) AS prev_close,
     -- = calculating for daily return
