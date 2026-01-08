@@ -14,12 +14,15 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+#connect routers to main app
+
+app.include_router(prices.router, prefix = "/api")
 #health check
 @app.get("/api/health")
 def health():
     return {"status": "ok"}
 
-# only need to run main.py
+# only need to run main.py instead of uvicorn on terminal
 if __name__ == "__main__":
     uvicorn.run(
         "main:app",
