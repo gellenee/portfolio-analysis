@@ -4,8 +4,7 @@ from sqlalchemy import create_engine
 from pprint import pprint
 from pathlib import Path
 
-BASE_DIR = Path("backend/app/routes").parents[3].resolve()
-print(BASE_DIR)
+BASE_DIR = Path("backend/app/routes").resolve().parents[4]
 DB_PATH = BASE_DIR / "my_local.db"
 
 engine = create_engine(f"sqlite:///{DB_PATH}")
